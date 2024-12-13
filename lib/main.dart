@@ -3,6 +3,8 @@ import 'package:myapp/themes/theme.dart';
 import 'package:myapp/widgets/input_widget.dart';
 import 'package:myapp/widgets/output.dart';
 
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 void main() {
   runApp(const MyApp());
 }
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
+      scaffoldMessengerKey: scaffoldMessengerKey,
       home: const MyHomePage(),
     );
   }
@@ -48,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0), // Padding inside the card
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min, // Adjust size to content
                 children: [
                   // IP Address Input Section
@@ -67,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     '0',
                   ]),
                   const SizedBox(height: 32),
-                  Output()
+                  const Output()
                 ],
               ),
             ),
@@ -81,30 +85,25 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildInputRow(List<String> hints, {bool hasSuffix = false}) {
     List<Widget> children = [];
     for (var i = 0; i < hints.length; i++) {
-      children.add(Inputwidget(
+      children.add(IntrinsicWidth(child: Inputwidget(
         hintText: hints[i],
         notifyParent: refresh,
-      ));
+      )));
       if (i < hints.length - 1) {
         children.add(
           Text(
             hasSuffix && i == hints.length - 2 ? '/' : '.',
             style: const TextStyle(
               fontSize: 30,
-              color: Color.fromARGB(162, 0, 0, 0),
+              color: Colors.grey,
             ),
           ),
         );
       }
     }
-    return Row(children: children);
-  }
-
-  // Builds a column of texts
-  Widget _buildColumnWithTexts(List<String> texts) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: texts.map((text) => SelectableText(text)).toList(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center, // Center horizontally
+      children: children,
     );
   }
 

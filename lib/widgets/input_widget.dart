@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/logic/model.dart';
 
 class Inputwidget extends StatefulWidget {
@@ -33,11 +34,16 @@ class _InputwidgetState extends State<Inputwidget> {
     return Expanded(
       child: TextField(
         keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(3)
+        ],
         style: const TextStyle(fontSize: 20),
         textAlign: TextAlign.center,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           hintText: widget.hintText,
+          hintStyle: TextStyle(color: Colors.grey[800]),
         ),
         onSubmitted: (value) {
           setState(() {
