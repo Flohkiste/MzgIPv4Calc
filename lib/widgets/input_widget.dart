@@ -3,9 +3,13 @@ import 'package:myapp/logic/model.dart';
 
 class Inputwidget extends StatefulWidget {
   final String hintText;
+  final int index;
   const Inputwidget(
-      {super.key, required this.hintText, required this.notifyParent});
-  final Function() notifyParent;
+      {super.key,
+      required this.hintText,
+      required this.setValue,
+      required this.index});
+  final Function(int, String) setValue;
 
   @override
   State<Inputwidget> createState() => _InputwidgetState();
@@ -40,12 +44,7 @@ class _InputwidgetState extends State<Inputwidget> {
           hintText: widget.hintText,
         ),
         onSubmitted: (value) {
-          setState(() {
-            _input = int.tryParse(value) ?? -1;
-            Model().ipAdress[0] = 1;
-            widget.notifyParent;
-            debugPrint('Input: $_input');
-          });
+          widget.setValue(widget.index, value);
         },
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/logic/model.dart';
 import 'package:myapp/themes/theme.dart';
 import 'package:myapp/widgets/input_widget.dart';
 import 'package:myapp/widgets/output.dart';
@@ -15,8 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MZG',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
+      theme: AppTheme.lightTheme,
+      themeMode: ThemeMode.light,
       home: const MyHomePage(),
     );
   }
@@ -30,12 +31,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var ip = {-1, -1, -1, -1};
+  var model = Model();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      //backgroundColor: Colors.grey[900],
       body: Padding(
         padding: const EdgeInsets.all(16.0), // Add padding around the card
         child: Center(
@@ -57,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     '10',
                     '1',
                     '23',
-                  ], hasSuffix: true),
+                  ], setIPAdress, hasSuffix: true),
                   const SizedBox(height: 16),
                   // Subnet Mask Input Section
                   _buildInputRow([
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     '255',
                     '255',
                     '0',
-                  ]),
+                  ], setSNM),
                   const SizedBox(height: 32),
                   Output()
                 ],
@@ -78,12 +79,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // Builds a row of input fields with optional separator and suffix
-  Widget _buildInputRow(List<String> hints, {bool hasSuffix = false}) {
+  Widget _buildInputRow(List<String> hints, Function(int, String) setValue,
+      {bool hasSuffix = false}) {
     List<Widget> children = [];
     for (var i = 0; i < hints.length; i++) {
       children.add(Inputwidget(
         hintText: hints[i],
-        notifyParent: refresh,
+        setValue: setValue,
+        index: i,
       ));
       if (i < hints.length - 1) {
         children.add(
@@ -110,5 +113,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void refresh() {
     setState(() {});
+  }
+
+  void setIPAdress(int index, String value) {
+    setState(() {
+      var input = int.tryParse(value) ?? model.ipAdress[index];
+      model.ipAdress[index] = input;
+      debugPrint("IP: " + model.ipAdress.toString());
+    });
+  }
+
+  void setSNM(int index, String value) {
+    setState(() {
+      var input = int.tryParse(value) ?? model.subnetMask[index];
+      model.subnetMask[index] = input;
+      debugPrint("SNM: " + model.subnetMask.toString());
+    });
   }
 }

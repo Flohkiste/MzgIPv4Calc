@@ -16,8 +16,18 @@ class _OutputState extends State<Output> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildColumnWithTexts(['Network', 'Frist IP', 'Last IP']),
-        _buildColumnWithTexts([model.ipAdress[0].toString(), "-1", "-1"]),
+        _buildColumnWithTexts([
+          'Network',
+          'Frist IP',
+          'Last IP',
+          'Broadcast',
+        ]),
+        _buildColumnWithTexts([
+          model.getNetworkID().join("."),
+          model.getFirstIP().join("."),
+          model.getLastIP().join("."),
+          model.getBroadcast().join("."),
+        ]),
       ],
     );
   }
