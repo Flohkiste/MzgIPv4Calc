@@ -50,7 +50,12 @@ class _InputwidgetState extends State<Inputwidget> {
         ),
         onSubmitted: (value) {
           setState(() {
-            widget.setValue(widget.index, value);
+            widget.setValue(widget.index, value == "" ? widget.hintText : value);
+          });
+        },
+        onChanged: (value) {
+         setState(() {
+            widget.setValue(widget.index, value == "" ? widget.hintText : value);
           });
         },
       ),
