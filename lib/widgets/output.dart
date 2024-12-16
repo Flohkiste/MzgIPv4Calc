@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/logic/model.dart';
-import 'package:myapp/main.dart'; // Import the main.dart file to access the scaffoldMessengerKey
+import 'package:myapp/main.dart';
 
 class Output extends StatefulWidget {
   const Output({super.key});
@@ -19,12 +19,17 @@ class _OutputState extends State<Output> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildColumnWithTexts(
-          ['Network', 'First IP', 'Last IP'],
+          ['Network', 'First IP', 'Last IP', 'Broadcast'],
           [model.ipAdress[0].toString(), "-1", "-1"],
           isSelectable: false,
         ),
         _buildColumnWithTexts(
-          [model.ipAdress[0].toString(), "-1", "-1"],
+          [
+          model.getNetworkID().join("."),
+          model.getFirstIP().join("."),
+          model.getLastIP().join("."),
+          model.getBroadcast().join("."),
+          ],
           [],
           isSelectable: true,
         ),
