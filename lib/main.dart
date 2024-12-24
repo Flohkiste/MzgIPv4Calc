@@ -3,6 +3,7 @@ import 'package:myapp/logic/model.dart';
 import 'package:myapp/themes/theme.dart';
 import 'package:myapp/widgets/input_widget.dart';
 import 'package:myapp/widgets/output.dart';
+import 'package:myapp/widgets/select_view.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -67,13 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 16),
                   // Subnet Mask Input Section
                   _buildInputRow([
-                    '255',
-                    '255',
-                    '255',
-                    '0',
+                    "255",
+                    "255",
+                    "254",
+                    "0",
                   ], setSNM),
                   const SizedBox(height: 32),
-                  Output()
+                  const SelectView(),
+                  Output(model: model)
                 ],
               ),
             ),
@@ -118,6 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setIPAdress(int index, String value) {
     setState(() {
+      if (index > 3) {
+        var input = int.tryParse(value) ?? model.cidr;
+        model.cidr = input;
+        model.setSubnetMaskFromCIDR();
+        return;
+      }
+
       var input = int.tryParse(value) ?? model.ipAdress[index];
       model.ipAdress[index] = input;
       debugPrint("IP: " + model.ipAdress.toString());
@@ -129,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var input = int.tryParse(value) ?? model.subnetMask[index];
       model.subnetMask[index] = input;
       debugPrint("SNM: " + model.subnetMask.toString());
+      model.setCIDRFromSubnetMask();
     });
   }
 }
