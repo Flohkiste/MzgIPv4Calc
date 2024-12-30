@@ -5,12 +5,16 @@ import 'package:myapp/logic/model.dart';
 class Inputwidget extends StatefulWidget {
   final String hintText;
   final int index;
-  const Inputwidget(
-      {super.key,
-      required this.hintText,
-      required this.setValue,
-      required this.index});
   final Function(int, String) setValue;
+  final bool isSubnetMaskField;
+
+  const Inputwidget({
+    super.key,
+    required this.hintText,
+    required this.setValue,
+    required this.index,
+    this.isSubnetMaskField = false,
+  });
 
   @override
   State<Inputwidget> createState() => _InputwidgetState();
@@ -19,45 +23,73 @@ class Inputwidget extends StatefulWidget {
 class _InputwidgetState extends State<Inputwidget> {
   var model = Model();
   late TextEditingController _controller;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.hintText);
+    _focusNode = FocusNode();
+    model.addListener(_updateTextField);
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
+    model.removeListener(_updateTextField);
     super.dispose();
+  }
+
+  void _updateTextField() {
+    // Update only subnet mask fields if this is a subnet mask widget
+    if (widget.isSubnetMaskField) {
+      setState(() {
+        _controller.text = model.subnetMask[widget.index].toString();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TextField(
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(3)
-        ],
-        style: const TextStyle(fontSize: 20),
-        textAlign: TextAlign.center,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: Colors.grey[800]),
+      child: RawKeyboardListener(
+        focusNode: _focusNode,
+        onKey: (event) {
+          if (event.isKeyPressed(LogicalKeyboardKey.tab)) {
+            if (_controller.text.isEmpty) {
+              _controller.text = widget.hintText;
+              widget.setValue(widget.index, widget.hintText);
+            }
+            FocusScope.of(context).nextFocus();
+          }
+        },
+        child: TextField(
+          controller: _controller,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(3),
+          ],
+          style: const TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            hintText: widget.hintText,
+            hintStyle: TextStyle(color: Colors.grey[800]),
+          ),
+          onSubmitted: (value) {
+            if (value.isEmpty) {
+              _controller.text = widget.hintText;
+              value = widget.hintText;
+            }
+            widget.setValue(widget.index, value);
+            FocusScope.of(context).nextFocus();
+          },
+          onChanged: (value) {
+            widget.setValue(widget.index, value.isEmpty ? widget.hintText : value);
+          },
         ),
-        onSubmitted: (value) {
-          setState(() {
-            widget.setValue(widget.index, value == "" ? widget.hintText : value);
-          });
-        },
-        onChanged: (value) {
-         setState(() {
-            widget.setValue(widget.index, value == "" ? widget.hintText : value);
-          });
-        },
       ),
     );
   }

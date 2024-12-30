@@ -28,7 +28,7 @@ class _OutputState extends State<Output> {
         // Left Column
         _buildColumnWithTexts(
           ['Network', 'First IP', 'Last IP', 'Broadcast'],
-          rightColumnTexts, // Corresponding values to copy
+          rightColumnTexts,
           isSelectable: false,
         ),
         // Right Column

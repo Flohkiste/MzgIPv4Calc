@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 var map = {
   1: 128,
   2: 192,
@@ -9,7 +11,7 @@ var map = {
   8: 255,
 };
 
-class Model {
+class Model extends ChangeNotifier {
   var ipAdress = [192, 168, 10, 1];
   var subnetMask = [255, 255, 255, 0];
   int cidr = 23;
@@ -72,6 +74,7 @@ class Model {
       String octetString = bin.substring(x * 8, (x + 1) * 8);
       subnetMask[x] = int.parse(octetString, radix: 2);
     }
+    notifyListeners();
   }
 
   void setCIDRFromSubnetMask() {

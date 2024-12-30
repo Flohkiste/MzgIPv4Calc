@@ -4,12 +4,19 @@ import 'package:myapp/themes/theme.dart';
 import 'package:myapp/widgets/input_widget.dart';
 import 'package:myapp/widgets/output.dart';
 import 'package:myapp/widgets/select_view.dart';
+import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
+
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Model(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -43,36 +50,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.grey[900],
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // Add padding around the card
+        padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Card(
-            elevation: 8, // Adds shadow to the card
+            elevation: 8,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12), // Rounded corners
+              borderRadius: BorderRadius.circular(12),
             ),
-            color: Theme.of(context).cardColor, // Card color from theme
+            color: Theme.of(context).cardColor,
             child: Padding(
-              padding: const EdgeInsets.all(16.0), // Padding inside the card
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min, // Adjust size to content
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // IP Address Input Section
-                  _buildInputRow([
-                    '192',
-                    '168',
-                    '10',
-                    '1',
-                    '23',
-                  ], setIPAdress, hasSuffix: true),
-                  const SizedBox(height: 16),
-                  // Subnet Mask Input Section
-                  _buildInputRow([
-                    "255",
-                    "255",
-                    "254",
-                    "0",
-                  ], setSNM),
+                  _buildInputRow(
+                    ['192', '168', '10', '1', '23'],
+                    setIPAdress,
+                    hasSuffix: true,
+                  ),
+
+                  _buildInputRow(
+                    ["255", "255", "254", "0"],
+                    setSNM,
+                    isSubnetMaskField: true,
+                  ),
                   const SizedBox(height: 32),
                   const SelectView(),
                   Output(model: model)
@@ -85,17 +87,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // Builds a row of input fields with optional separator and suffix
-  Widget _buildInputRow(List<String> hints, Function(int, String) setValue,
-      {bool hasSuffix = false}) {
+  Widget _buildInputRow(
+      List<String> hints,
+      Function(int, String) setValue, {
+        bool hasSuffix = false,
+        bool isSubnetMaskField = false,
+      }) {
     List<Widget> children = [];
     for (var i = 0; i < hints.length; i++) {
       children.add(IntrinsicWidth(
-          child: Inputwidget(
-        hintText: hints[i],
-        setValue: setValue,
-        index: i,
-      )));
+        child: Inputwidget(
+          hintText: hints[i],
+          setValue: setValue,
+          index: i,
+          isSubnetMaskField: isSubnetMaskField,
+        ),
+      ));
       if (i < hints.length - 1) {
         children.add(
           Text(
@@ -109,10 +116,11 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center, // Center horizontally
+      mainAxisAlignment: MainAxisAlignment.center,
       children: children,
     );
   }
+
 
   void refresh() {
     setState(() {});
