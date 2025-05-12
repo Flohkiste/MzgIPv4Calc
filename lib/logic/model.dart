@@ -12,7 +12,7 @@ var map = {
 };
 
 class Model extends ChangeNotifier {
-  var ipAdress = [192, 168, 10, 1];
+  var ipAddress = [192, 168, 10, 1];
   var subnetMask = [255, 255, 255, 0];
   int cidr = 23;
 
@@ -26,8 +26,8 @@ class Model extends ChangeNotifier {
 
   List getNetworkID() {
     var networkIP = [];
-    for (int x = 0; x < ipAdress.length; x++) {
-      networkIP.add(ipAdress[x] & subnetMask[x]);
+    for (int x = 0; x < ipAddress.length; x++) {
+      networkIP.add(ipAddress[x] & subnetMask[x]);
     }
     return networkIP;
   }
@@ -40,7 +40,7 @@ class Model extends ChangeNotifier {
 
   List getDif() {
     var dif = [];
-    for (int x = 0; x < ipAdress.length; x++) {
+    for (int x = 0; x < ipAddress.length; x++) {
       dif.add(255 - subnetMask[x]);
     }
     return dif;
@@ -48,7 +48,7 @@ class Model extends ChangeNotifier {
 
   List getBroadcast() {
     var broadcast = getNetworkID();
-    for (int x = 0; x < ipAdress.length; x++) {
+    for (int x = 0; x < ipAddress.length; x++) {
       broadcast[x] += getDif()[x];
     }
     return broadcast;

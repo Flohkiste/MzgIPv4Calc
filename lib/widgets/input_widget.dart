@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/logic/model.dart';
 
-class Inputwidget extends StatefulWidget {
+class Input extends StatefulWidget {
   final String hintText;
   final int index;
   final Function(int, String) setValue;
   final bool isSubnetMaskField;
 
-  const Inputwidget({
+  const Input({
     super.key,
     required this.hintText,
     required this.setValue,
@@ -17,10 +17,10 @@ class Inputwidget extends StatefulWidget {
   });
 
   @override
-  State<Inputwidget> createState() => _InputwidgetState();
+  State<Input> createState() => _InputState();
 }
 
-class _InputwidgetState extends State<Inputwidget> {
+class _InputState extends State<Input> {
   var model = Model();
   late TextEditingController _controller;
   late FocusNode _focusNode;
@@ -42,7 +42,6 @@ class _InputwidgetState extends State<Inputwidget> {
   }
 
   void _updateTextField() {
-    // Update only subnet mask fields if this is a subnet mask widget
     if (widget.isSubnetMaskField) {
       setState(() {
         _controller.text = model.subnetMask[widget.index].toString();

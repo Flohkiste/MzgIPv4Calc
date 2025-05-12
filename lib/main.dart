@@ -3,7 +3,6 @@ import 'package:myapp/logic/model.dart';
 import 'package:myapp/themes/theme.dart';
 import 'package:myapp/widgets/input_widget.dart';
 import 'package:myapp/widgets/output.dart';
-import 'package:myapp/widgets/select_view.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
@@ -66,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   _buildInputRow(
                     ['192', '168', '10', '1', '23'],
-                    setIPAdress,
+                    setIPAddress,
                     hasSuffix: true,
                   ),
 
@@ -76,7 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     isSubnetMaskField: true,
                   ),
                   const SizedBox(height: 32),
-                  const SelectView(),
                   Output(model: model)
                 ],
               ),
@@ -96,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Widget> children = [];
     for (var i = 0; i < hints.length; i++) {
       children.add(IntrinsicWidth(
-        child: Inputwidget(
+        child: Input(
           hintText: hints[i],
           setValue: setValue,
           index: i,
@@ -126,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
-  void setIPAdress(int index, String value) {
+  void setIPAddress(int index, String value) {
     setState(() {
       if (index > 3) {
         var input = int.tryParse(value) ?? model.cidr;
@@ -135,9 +133,9 @@ class _MyHomePageState extends State<MyHomePage> {
         return;
       }
 
-      var input = int.tryParse(value) ?? model.ipAdress[index];
-      model.ipAdress[index] = input;
-      debugPrint("IP: " + model.ipAdress.toString());
+      var input = int.tryParse(value) ?? model.ipAddress[index];
+      model.ipAddress[index] = input;
+      debugPrint("IP: ${model.ipAddress}");
     });
   }
 
@@ -145,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       var input = int.tryParse(value) ?? model.subnetMask[index];
       model.subnetMask[index] = input;
-      debugPrint("SNM: " + model.subnetMask.toString());
+      debugPrint("SNM: ${model.subnetMask}");
       model.setCIDRFromSubnetMask();
     });
   }
