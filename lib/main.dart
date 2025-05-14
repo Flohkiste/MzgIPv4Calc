@@ -42,7 +42,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Model model = Model();
+  late Model model;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    model = Provider.of<Model>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +98,10 @@ class _MyHomePageState extends State<MyHomePage> {
         bool isSubnetMaskField = false,
       }) {
     List<Widget> children = [];
+
     for (var i = 0; i < hints.length; i++) {
-      children.add(IntrinsicWidth(
+      children.add(SizedBox(
+        width: 70,
         child: Input(
           hintText: hints[i],
           setValue: setValue,
@@ -101,20 +109,26 @@ class _MyHomePageState extends State<MyHomePage> {
           isSubnetMaskField: isSubnetMaskField,
         ),
       ));
+
       if (i < hints.length - 1) {
         children.add(
-          Text(
-            hasSuffix && i == hints.length - 2 ? '/' : '.',
-            style: const TextStyle(
-              fontSize: 30,
-              color: Colors.grey,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
+              hasSuffix && i == hints.length - 2 ? '/' : '.',
+              style: const TextStyle(
+                fontSize: 28,
+                color: Colors.grey,
+              ),
             ),
           ),
         );
       }
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+
+    return Wrap(
+      spacing: 8,
+      alignment: WrapAlignment.center,
       children: children,
     );
   }

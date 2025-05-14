@@ -28,7 +28,7 @@ class _InputState extends State<Input> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.hintText);
+    _controller = TextEditingController();
     _focusNode = FocusNode();
     model.addListener(_updateTextField);
   }
@@ -51,44 +51,44 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RawKeyboardListener(
-        focusNode: _focusNode,
-        onKey: (event) {
-          if (event.isKeyPressed(LogicalKeyboardKey.tab)) {
-            if (_controller.text.isEmpty) {
-              _controller.text = widget.hintText;
-              widget.setValue(widget.index, widget.hintText);
-            }
-            FocusScope.of(context).nextFocus();
+    return RawKeyboardListener(
+      focusNode: _focusNode,
+      onKey: (event) {
+        if (event.isKeyPressed(LogicalKeyboardKey.tab)) {
+          if (_controller.text.isEmpty) {
+            _controller.text = widget.hintText;
+            widget.setValue(widget.index, widget.hintText);
           }
-        },
-        child: TextField(
-          controller: _controller,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(3),
-          ],
-          style: const TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.grey[800]),
-          ),
-          onSubmitted: (value) {
-            if (value.isEmpty) {
-              _controller.text = widget.hintText;
-              value = widget.hintText;
-            }
-            widget.setValue(widget.index, value);
-            FocusScope.of(context).nextFocus();
-          },
-          onChanged: (value) {
-            widget.setValue(widget.index, value.isEmpty ? widget.hintText : value);
-          },
+          FocusScope.of(context).nextFocus();
+        }
+      },
+      child: TextField(
+        controller: _controller,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(3),
+        ],
+        style: const TextStyle(fontSize: 20),
+        textAlign: TextAlign.center,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: Colors.grey[800]),
+          isDense: true, // makes input tighter
+          contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         ),
+        onSubmitted: (value) {
+          if (value.isEmpty) {
+            _controller.text = widget.hintText;
+            value = widget.hintText;
+          }
+          widget.setValue(widget.index, value);
+          FocusScope.of(context).nextFocus();
+        },
+        onChanged: (value) {
+          widget.setValue(widget.index, value.isEmpty ? widget.hintText : value);
+        },
       ),
     );
   }
