@@ -75,7 +75,7 @@ class _InputState extends State<Input> {
           border: const OutlineInputBorder(),
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.grey[800]),
-          isDense: true, // makes input tighter
+          isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         ),
         onSubmitted: (value) {
