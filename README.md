@@ -1,16 +1,80 @@
-# myapp
+# MZG IPv4 Calculator – Installationsanleitung
 
-A new Flutter project.
+Dies ist ein einfacher IPv4-Subnetzrechner, entwickelt mit Flutter. Die Anwendung berechnet Netzwerkdaten basierend auf IP-Adresse und Subnetzmaske.
 
-## Getting Started
+## Voraussetzungen
 
-This project is a starting point for a Flutter application.
+* Flutter SDK: [https://docs.flutter.dev/get-started/install](https://docs.flutter.dev/get-started/install)
+* Git
+* Xcode (für macOS) oder Android Studio (für Android)
+* macOS, Windows oder Linux (abhängig vom Zielsystem)
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+git clone https://github.com/Flohkiste/MzgIPv4Calc.git
+cd MzgIPv4Calc
+flutter pub get
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Anwendung starten
+
+### macOS
+
+```bash
+flutter run -d macos
+```
+
+### Windows
+
+```bash
+flutter run -d windows
+```
+
+### Linux
+
+```bash
+flutter run -d linux
+```
+
+### Web
+
+```bash
+flutter run -d chrome
+```
+
+## Build erstellen
+
+### macOS
+
+```bash
+flutter build macos
+```
+
+Die fertige App befindet sich dann unter:
+
+```
+build/macos/Build/Products/Release/
+```
+
+### Windows
+
+```bash
+flutter build windows
+```
+
+### Linux
+
+```bash
+flutter build linux
+```
+
+## Tests ausführen
+
+```bash
+flutter test
+```
+
+## Lizenz
+
+Dieses Projekt steht unter der MIT-Lizenz.
