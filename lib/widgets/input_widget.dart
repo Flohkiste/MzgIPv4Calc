@@ -86,9 +86,6 @@ class _InputState extends State<Input> {
           widget.setValue(widget.index, value);
           FocusScope.of(context).nextFocus();
         },
-        onChanged: (value) {
-          widget.setValue(widget.index, value.isEmpty ? widget.hintText : value);
-        },
       ),
     );
   }

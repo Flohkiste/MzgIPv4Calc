@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildInputRow(
-                    ['192', '168', '10', '1', '23'],
+                    model.ipAddress.map((e) => e.toString()).toList() + [model.cidr.toString()],
                     setIPAddress,
                     hasSuffix: true,
                   ),

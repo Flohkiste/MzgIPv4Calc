@@ -80,10 +80,9 @@ class Model extends ChangeNotifier {
   void setCIDRFromSubnetMask() {
     String bin = "";
     for (int x = 0; x < 4; x++) {
-      bin += subnetMask[x].toRadixString(2);
+      bin += subnetMask[x].toRadixString(2).padLeft(8, '0');
     }
-    int x = "1".allMatches(bin).length;
-
-    cidr = x;
+    cidr = "1".allMatches(bin).length;
+    notifyListeners();
   }
 }
