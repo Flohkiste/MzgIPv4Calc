@@ -14,7 +14,7 @@ var map = {
 class Model extends ChangeNotifier {
   var ipAddress = [192, 168, 10, 1];
   var subnetMask = [255, 255, 255, 0];
-  int cidr = 23;
+  int cidr = 24;
 
   static final Model _singelton = Model._internal();
 
