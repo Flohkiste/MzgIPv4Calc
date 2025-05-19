@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/logic/model.dart';
 import 'package:myapp/themes/theme.dart';
 import 'package:myapp/widgets/input_widget.dart';
-import 'package:myapp/widgets/output.dart';
+import 'package:myapp/widgets/output_widget.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
@@ -140,10 +140,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void setIPAddress(int index, String value) {
     setState(() {
-      if (index > 3) {
+      if (index > 3) {  // wenn index > 3 dann ist es CIDR-Teil
         var input = int.tryParse(value) ?? model.cidr;
         model.cidr = input;
-        model.setSubnetMaskFromCIDR();
+        model.setSubnetMaskFromCIDR();  // aktualisiert SNM
         return;
       }
 
@@ -158,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var input = int.tryParse(value) ?? model.subnetMask[index];
       model.subnetMask[index] = input;
       debugPrint("SNM: ${model.subnetMask}");
-      model.setCIDRFromSubnetMask();
+      model.setCIDRFromSubnetMask();  // aktualisiert CIDR
     });
   }
 }
